@@ -1,0 +1,19 @@
+@media (max-width: 600px), (max-device-width: 600px) {
+  .en-range-slider__form {
+    &-container {
+      display: block;
+    }
+    &-amount {
+      margin: 10px auto;
+    }
+    &-frequency {
+      display: block;
+      margin: 0;
+      label {
+        display: block;
+        margin: 10px auto;
+        max-width: 100%;
+      }
+    }
+  }
+}

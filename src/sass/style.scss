@@ -1,0 +1,6 @@
+@import "mixins.scss";
+@import "./colors.scss";
+#en-range-slider {
+  @import "./desktop.scss";
+  @import "./mobile.scss";
+}

@@ -1,0 +1,173 @@
+.en-range-slider {
+  width: 100%;
+  max-width: 550px;
+  padding-top: 10px;
+  height: 80px;
+  &__container {
+    position: relative;
+    background-color: $bg;
+    color: $txt;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-radius: 40px;
+    height: 40px;
+    padding: 0 20px;
+    margin-bottom: 10px;
+    .en-range-slider__min,
+    .en-range-slider__amount,
+    .en-range-slider__max {
+      display: flex;
+      flex-direction: row;
+      font-size: 1.3rem;
+      justify-content: center;
+      color: $txt;
+      font-weight: 700;
+      line-height: 1;
+      &.currency-right {
+        flex-direction: row-reverse;
+      }
+    }
+    .en-range-slider__min,
+    .en-range-slider__max {
+      opacity: 1;
+      transition: 0.3s opacity ease-in-out;
+    }
+    .en-range-slider__range {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 1;
+
+      input {
+        appearance: none;
+        width: 100%;
+        background-color: transparent;
+        height: 40px;
+        border: none;
+        margin: 0;
+        &::-webkit-slider-thumb {
+          appearance: none;
+          width: 60px;
+          height: 60px;
+          border-radius: 60px;
+          background-color: $thumb;
+          cursor: pointer;
+          transition: background-color 0.2s ease-in-out;
+          border: 2px solid $txt;
+          &:hover {
+            background-color: $thumb-hover;
+          }
+          &:active {
+            background-color: $thumb-active;
+          }
+        }
+      }
+    }
+    .en-range-slider__amount {
+      position: absolute;
+      top: 0;
+      width: 60px;
+      font-size: 1.1rem;
+      text-align: center;
+      line-height: 40px;
+      z-index: 2;
+      transform: translateX(-30px);
+      user-select: none;
+      pointer-events: none;
+      white-space: nowrap;
+    }
+  }
+  .en-range-slider__min-message,
+  .en-range-slider__max-message {
+    height: auto;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease-in-out, padding 0.3s ease-in-out;
+    font-size: 0.75rem;
+    line-height: 1;
+    font-weight: 700;
+    color: $form-txt;
+    padding: 0;
+    &.show {
+      max-height: 100%;
+      padding: 2px 0;
+    }
+  }
+}
+.en-range-slider__form {
+  &-container {
+    margin: 10px auto;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+  }
+  &-amount {
+    width: 100px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    &.currency-right {
+      flex-direction: row-reverse;
+    }
+    input {
+      width: 100%;
+    }
+  }
+  &-frequency {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    margin-left: 20px;
+    align-items: stretch;
+    position: relative;
+    width: 100%;
+    gap: 15px;
+    label {
+      width: 100%;
+      max-width: 100px;
+      height: 40px;
+      cursor: pointer;
+      span {
+        display: block;
+        line-height: 38px;
+        height: 40px;
+        text-align: center;
+        white-space: nowrap;
+        border: 1px solid $form-txt;
+        border-radius: 2px;
+        color: $form-txt;
+        font-weight: 700;
+        font-size: 0.9rem;
+        transition: background-color 0.3s ease-in-out,
+          border-color 0.3s ease-in-out, color 0.3s ease-in-out;
+      }
+      input {
+        position: absolute;
+        top: 0;
+        left: 0;
+        opacity: 0;
+        &:checked + span {
+          background-color: $thumb;
+          color: $txt;
+          border-color: $thumb;
+        }
+      }
+      &:hover {
+        span {
+          background-color: $thumb;
+          color: $txt;
+          border-color: $thumb;
+        }
+      }
+    }
+  }
+}
