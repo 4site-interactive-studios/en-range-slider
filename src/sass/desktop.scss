@@ -5,8 +5,8 @@
   height: 80px;
   &__container {
     position: relative;
-    background-color: $bg;
-    color: $txt;
+    background-color: var(--en-range-slider-color-bg);
+    color: var(--en-range-slider-color-txt);
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -21,7 +21,7 @@
       flex-direction: row;
       font-size: 1.3rem;
       justify-content: center;
-      color: $txt;
+      color: var(--en-range-slider-color-txt);
       font-weight: 700;
       line-height: 1;
       &.currency-right {
@@ -53,15 +53,15 @@
           width: 60px;
           height: 60px;
           border-radius: 60px;
-          background-color: $thumb;
+          background-color: var(--en-range-slider-color-thumb);
           cursor: pointer;
           transition: background-color 0.2s ease-in-out;
-          border: 2px solid $txt;
+          border: 2px solid var(--en-range-slider-color-txt);
           &:hover {
-            background-color: $thumb-hover;
+            background-color: var(--en-range-slider-color-thumb-hover);
           }
           &:active {
-            background-color: $thumb-active;
+            background-color: var(--en-range-slider-color-thumb-active);
           }
         }
       }
@@ -89,7 +89,7 @@
     font-size: 0.75rem;
     line-height: 1;
     font-weight: 700;
-    color: $form-txt;
+    color: var(--en-range-slider-color-form-txt);
     padding: 0;
     &.show {
       max-height: 100%;
@@ -142,9 +142,9 @@
         height: 40px;
         text-align: center;
         white-space: nowrap;
-        border: 1px solid $form-txt;
+        border: 1px solid var(--en-range-slider-color-form-txt);
         border-radius: 2px;
-        color: $form-txt;
+        color: var(--en-range-slider-color-form-txt);
         font-weight: 700;
         font-size: 0.9rem;
         transition: background-color 0.3s ease-in-out,
@@ -156,16 +156,16 @@
         left: 0;
         opacity: 0;
         &:checked + span {
-          background-color: $thumb;
-          color: $txt;
-          border-color: $thumb;
+          background-color: var(--en-range-slider-color-thumb);
+          color: var(--en-range-slider-color-txt);
+          border-color: var(--en-range-slider-color-thumb);
         }
       }
       &:hover {
         span {
-          background-color: $thumb;
-          color: $txt;
-          border-color: $thumb;
+          background-color: var(--en-range-slider-color-thumb);
+          color: var(--en-range-slider-color-txt);
+          border-color: var(--en-range-slider-color-thumb);
         }
       }
     }

@@ -10,12 +10,19 @@ export class App {
     maxMessage:
       "You can donate as much as you like, please insert the amount of your choice below", // Message to display when the maximum value is reached
     step: "1", // Increment of the range
-    amount: "10", // Default amount
-    currency: "$", // Default currency
+    defaultAmount: "10", // Default amount
+    currencySymbol: "", // Default currency symbol
     currencyPosition: "left", // Currency position
+    form: "true", // Show form
     oneTimeLabel: "", // Label for the one time donation
     monthlyLabel: "", // Label for the monthly donation
     annualLabel: "", // Label for the annually donation
+    colorBg: "", // Background color
+    colorTxt: "", // Text color
+    colorFormTxt: "", // Text color of the form
+    colorThumb: "", // Slider Thumb color
+    colorThumbHover: "", // Slider Thumb hover color
+    colorThumbActive: "", // Slider Thumb active color
   };
 
   constructor() {
@@ -33,6 +40,21 @@ export class App {
         this.run();
       });
     }
+  }
+
+  private get currency() {
+    if (this.options.currencySymbol !== "") return this.options.currencySymbol;
+    const currency = document.querySelector(
+      "[name='transaction.paycurrency']"
+    ) as HTMLInputElement;
+    const currencies = {
+      EUR: "€",
+      USD: "$",
+      GBP: "£",
+    };
+    return currency && currency.value in currencies
+      ? currencies[currency.value as keyof typeof currencies]
+      : "$";
   }
 
   private shouldRun(): boolean {
@@ -55,11 +77,12 @@ export class App {
   private run() {
     this.log("EN Range Slider Running");
     this.loadOptions();
+    this.renderCustomColors();
     this.renderRangeSlider();
     this.addEvents();
     this.calculateAmountPosition();
     this.addLiveVariables();
-    this.updateLiveVariables("TOTAL", this.options.amount);
+    this.updateLiveVariables("TOTAL", this.options.defaultAmount);
     this.updateLiveVariables("FREQUENCY", this.options.oneTimeLabel);
   }
   renderRangeSlider() {
@@ -68,36 +91,36 @@ export class App {
     slider.innerHTML = `
       <div class="en-range-slider__container">
         <div class="en-range-slider__min currency-${this.options.currencyPosition}">
-          <span class="en-range-slider__currency">${this.options.currency}</span>
+          <span class="en-range-slider__currency">${this.currency}</span>
           <span class="en-range-slider__min-value">${this.options.min}</span>
         </div>
         <output class="en-range-slider__amount currency-${this.options.currencyPosition}">
-          <span class="en-range-slider__currency">${this.options.currency}</span>
-          <span class="en-range-slider__amount-value">${this.options.amount}</span>
+          <span class="en-range-slider__currency">${this.currency}</span>
+          <span class="en-range-slider__amount-value">${this.options.defaultAmount}</span>
         </output>
         <div class="en-range-slider__range">
-          <input type="range" class="en-range-slider__range-input" min="${this.options.min}" max="${this.options.max}" step="${this.options.step}" value="${this.options.amount}">
+          <input type="range" class="en-range-slider__range-input" min="${this.options.min}" max="${this.options.max}" step="${this.options.step}" value="${this.options.defaultAmount}">
         </div>
         <div class="en-range-slider__max currency-${this.options.currencyPosition}">
-          <span class="en-range-slider__currency">${this.options.currency}</span>
+          <span class="en-range-slider__currency">${this.currency}</span>
           <span class="en-range-slider__max-value">${this.options.max}</span>
         </div>
       </div>
       <div class="en-range-slider__min-message">${this.options.minMessage}</div>
       <div class="en-range-slider__max-message">${this.options.maxMessage}</div>
     `;
-    const sliderForm = document.createElement("div");
-    sliderForm.classList.add("en-range-slider-form");
-    sliderForm.innerHTML = `
+    this.container.appendChild(slider);
+    if (this.options.form === "true") {
+      const sliderForm = document.createElement("div");
+      sliderForm.classList.add("en-range-slider-form");
+      sliderForm.innerHTML = `
     <div class="en-range-slider__form-container">
         <div class="en-range-slider__form-amount currency-${
           this.options.currencyPosition
         }">
-          <span class="en-range-slider__currency">${
-            this.options.currency
-          }</span>
+          <span class="en-range-slider__currency">${this.currency}</span>
           <input type="text" class="en-range-slider__form-amount-input" placeholder="Amount" value="${
-            this.options.amount
+            this.options.defaultAmount
           }" autocomplete="off" data-lpignore="true" inputmode="decimal">
         </div>
         <div class="en-range-slider__form-frequency">
@@ -107,8 +130,8 @@ export class App {
         </div>
       </div>
     `;
-    this.container.appendChild(slider);
-    this.container.appendChild(sliderForm);
+      this.container.appendChild(sliderForm);
+    }
   }
   private loadOptions() {
     const options = this.container?.dataset;
@@ -119,6 +142,44 @@ export class App {
           this.log(`EN Range Slider: ${key} = ${options[key]}`);
         }
       }
+    }
+  }
+  private renderCustomColors() {
+    if (this.options.colorBg !== "") {
+      document.documentElement.style.setProperty(
+        "--en-range-slider-color-bg",
+        this.options.colorBg
+      );
+    }
+    if (this.options.colorTxt !== "") {
+      document.documentElement.style.setProperty(
+        "--en-range-slider-color-txt",
+        this.options.colorTxt
+      );
+    }
+    if (this.options.colorFormTxt !== "") {
+      document.documentElement.style.setProperty(
+        "--en-range-slider-color-form-txt",
+        this.options.colorFormTxt
+      );
+    }
+    if (this.options.colorThumb !== "") {
+      document.documentElement.style.setProperty(
+        "--en-range-slider-color-thumb",
+        this.options.colorThumb
+      );
+    }
+    if (this.options.colorThumbHover !== "") {
+      document.documentElement.style.setProperty(
+        "--en-range-slider-color-thumb-hover",
+        this.options.colorThumbHover
+      );
+    }
+    if (this.options.colorThumbActive !== "") {
+      document.documentElement.style.setProperty(
+        "--en-range-slider-color-thumb-active",
+        this.options.colorThumbActive
+      );
     }
   }
   private addEvents() {
@@ -227,7 +288,7 @@ export class App {
         const amountInput = this.container?.querySelector(
           ".en-range-slider__form-amount-input"
         ) as HTMLInputElement;
-        amountInput.value = rangeInput.value;
+        if (amountInput) amountInput.value = rangeInput.value;
       }
     }
     if (maxContainer) {
