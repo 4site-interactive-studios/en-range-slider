@@ -78,6 +78,9 @@
       user-select: none;
       pointer-events: none;
       white-space: nowrap;
+      &--small {
+        font-size: 1rem;
+      }
     }
   }
   .en-range-slider__min-message,

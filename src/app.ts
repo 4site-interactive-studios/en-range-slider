@@ -200,25 +200,66 @@ export class App {
     }
     if (formAmountInput) {
       formAmountInput.addEventListener("change", () => {
+        // Check if the value has comma
+        if (formAmountInput.value.indexOf(",") > -1) {
+          formAmountInput.value = formAmountInput.value.replace(",", ".");
+        }
         if (+formAmountInput.value < +this.options.min) {
           formAmountInput.value = this.options.min;
         }
         this.calculateAmountPosition(formAmountInput.value);
       });
+      formAmountInput.addEventListener("keydown", (e) => {
+        if (e.key === "Enter") {
+          e.preventDefault();
+          if (formAmountInput.value.indexOf(",") > -1) {
+            formAmountInput.value = formAmountInput.value.replace(",", ".");
+          }
+          if (+formAmountInput.value < +this.options.min) {
+            formAmountInput.value = this.options.min;
+          }
+          this.calculateAmountPosition(formAmountInput.value);
+          return false;
+        }
+      });
     }
     if (formFrequencyInputs) {
       formFrequencyInputs.forEach((input) => {
         input.addEventListener("change", () => {
-          (window as any).EngagingNetworks.require._defined.enjs.setFieldValue(
-            "recurrfreq",
-            input.value
-          );
-          this.updateLiveVariables(
-            "FREQUENCY",
-            input.parentNode.querySelector(
-              ".en-range-slider__form-frequency-label-text"
-            )?.innerHTML ?? ""
-          );
+          if (input.value === "ONETIME") {
+            const frequencyInput = document.querySelector(
+              "#en__field_transaction_recurrfreq"
+            ) as HTMLSelectElement;
+            if (frequencyInput && frequencyInput.tagName === "SELECT") {
+              frequencyInput.selectedIndex = 0;
+            }
+            (
+              window as any
+            ).EngagingNetworks.require._defined.enjs.setFieldValue(
+              "recurrpay",
+              ""
+            );
+            this.updateLiveVariables("FREQUENCY", "");
+          } else {
+            (
+              window as any
+            ).EngagingNetworks.require._defined.enjs.setFieldValue(
+              "recurrfreq",
+              input.value
+            );
+            (
+              window as any
+            ).EngagingNetworks.require._defined.enjs.setFieldValue(
+              "recurrpay",
+              "Y"
+            );
+            this.updateLiveVariables(
+              "FREQUENCY",
+              input.parentNode.querySelector(
+                ".en-range-slider__form-frequency-label-text"
+              )?.innerHTML ?? ""
+            );
+          }
         });
       });
     }
@@ -248,6 +289,12 @@ export class App {
     const maxAmount = maxContainer.querySelector(
       ".en-range-slider__max-value"
     ) as HTMLSpanElement;
+
+    if (+rangeInput.value > 999) {
+      amountContainer.classList.add("en-range-slider__amount--small");
+    } else {
+      amountContainer.classList.remove("en-range-slider__amount--small");
+    }
 
     if (amount) {
       if (parseFloat(amount) > parseFloat(this.options.max)) {
