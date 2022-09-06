@@ -17,6 +17,7 @@ export class App {
     oneTimeLabel: "", // Label for the one time donation
     monthlyLabel: "", // Label for the monthly donation
     annualLabel: "", // Label for the annually donation
+    selectedFrequency: "onetime", // Default frequency
     colorBg: "", // Background color
     colorTxt: "", // Text color
     colorFormTxt: "", // Text color of the form
@@ -329,9 +330,6 @@ export class App {
           "donationAmt",
           rangeInput.value
         );
-      }
-
-      if (!amount) {
         const amountInput = this.container?.querySelector(
           ".en-range-slider__form-amount-input"
         ) as HTMLInputElement;
@@ -384,29 +382,24 @@ export class App {
     frequency: "oneTimeLabel" | "monthlyLabel" | "annualLabel"
   ) {
     if (this.options[frequency] === "") return "";
-    switch (frequency) {
-      case "oneTimeLabel":
-        return `
+    const frequencyValues = {
+      oneTimeLabel: "ONETIME",
+      monthlyLabel: "MONTHLY",
+      annualLabel: "ANNUAL",
+    };
+    const selected =
+      (this.options.selectedFrequency || "").toUpperCase() ===
+      frequencyValues[frequency];
+    return `
           <label class="en-range-slider__form-frequency-label">
-            <input type="radio" class="en-range-slider__form-frequency-input" name="frequency" value="ONETIME" checked>
-            <span class="en-range-slider__form-frequency-label-text">${this.options.oneTimeLabel}</span>
+            <input type="radio" class="en-range-slider__form-frequency-input" name="frequency" value="${
+              frequencyValues[frequency]
+            }" ${selected ? "checked" : ""}>
+            <span class="en-range-slider__form-frequency-label-text">${
+              this.options[frequency]
+            }</span>
           </label>
           `;
-      case "monthlyLabel":
-        return `
-          <label class="en-range-slider__form-frequency-label">
-            <input type="radio" class="en-range-slider__form-frequency-input" name="frequency" value="MONTHLY">
-            <span class="en-range-slider__form-frequency-label-text">${this.options.monthlyLabel}</span>
-          </label>
-        `;
-      case "annualLabel":
-        return `
-        <label class="en-range-slider__form-frequency-label">
-          <input type="radio" class="en-range-slider__form-frequency-input" name="frequency" value="ANNUAL">
-          <span class="en-range-slider__form-frequency-label-text">${this.options.annualLabel}</span>
-        </label>
-        `;
-    }
   }
 
   private addLiveVariables() {

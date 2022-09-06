@@ -47,6 +47,7 @@ Every option can be set as a data attribute on the `#en-range-slider` container 
 - **one-time-label**: The label for the one time button. Defaults to empty. If not set, the button will not be displayed.
 - **monthly-label**: The label for the monthly button. Defaults to empty. If not set, the button will not be displayed.
 - **annual-label**: The label for the annual button. Defaults to empty. If not set, the button will not be displayed.
+- **selected-frequency**: The frequency that will be selected by default. Defaults to `onetime`. Can be `onetime`, `monthly` or `annual`.
 
 ## Color Options
 
